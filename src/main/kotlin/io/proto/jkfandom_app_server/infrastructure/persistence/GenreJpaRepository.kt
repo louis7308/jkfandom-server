@@ -1,0 +1,8 @@
+package io.proto.jkfandom_app_server.infrastructure.persistence
+
+import io.proto.jkfandom_app_server.domain.onboarding.Genre
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
+
+@Repository
+interface GenreJpaRepository : JpaRepository<Genre, String>
