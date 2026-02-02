@@ -12,7 +12,7 @@ class XTokenVerifier(
 
     override fun verify(accessToken: String): SocialUser {
         val res = webClient.get()
-            .uri("https://api.twitter.com/2/users/me")
+            .uri("https://api.x.com/2/users/me")
             .header("Authorization", "Bearer $accessToken")
             .retrieve()
             .onStatus({ it.value() == 401 }) {

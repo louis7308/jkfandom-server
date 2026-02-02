@@ -46,13 +46,6 @@ class UserService(
         return UserResponse.from(savedUser)
     }
 
-    fun isNicknameAvailable(nickname: String, firebaseUid: String?): Boolean {
-        if (nickname.isBlank()) return false
-        val existing = if (firebaseUid.isNullOrBlank()) null else userRepository.findByFirebaseUid(firebaseUid)
-        if (existing != null && existing.nickname == nickname) return true
-        return !userRepository.existsByNickname(nickname)
-    }
-
     @Transactional
     fun signUp(
         principal: CurrentUserPrincipal,
@@ -67,10 +60,6 @@ class UserService(
 
         if (nickname.isBlank() || nickname.length > 20) {
             throw BusinessException(ErrorCode.INVALID_INPUT, "닉네임은 1~20자여야 합니다")
-        }
-
-        if (!isNicknameAvailable(nickname, principal.firebaseUid)) {
-            throw BusinessException(ErrorCode.INVALID_INPUT, "이미 사용 중인 닉네임입니다")
         }
 
         if (!onboardingCatalogService.existsCountry(command.countryCode)) {

@@ -57,25 +57,4 @@ class OnboardingController(
         @RequestParam(required = false) q: String?
     ): ApiFandomResponse<List<OnboardingCatalogService.ArtistItem>> =
         ApiFandomResponse.ok(catalogService.listArtists(q))
-
-    @Operation(summary = "닉네임 중복 체크")
-    @PostMapping("/nickname/validate")
-    fun validateNickname(
-        @RequestBody request: NicknameValidateRequest
-    ): ApiFandomResponse<NicknameValidateResponse> {
-        val nickname = request.nickname.trim()
-        val available = when {
-            nickname.isBlank() -> false
-            nickname.length > 20 -> false
-            else -> userService.isNicknameAvailable(nickname, null)
-        }
-
-        val reason = when {
-            nickname.isBlank() -> "닉네임은 필수입니다"
-            nickname.length > 20 -> "닉네임은 최대 20자까지 가능합니다"
-            available -> null
-            else -> "이미 사용 중인 닉네임입니다"
-        }
-        return ApiFandomResponse.ok(NicknameValidateResponse(available, reason))
-    }
 }
